@@ -1,0 +1,6 @@
+---
+# defaults file for krustlet
+
+krustlet_source: https://github.com/krustlet/krustlet/archive/refs/tags/v0.7.0.tar.gz
+
+krustlet_installation: /opt/krustlet

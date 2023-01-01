@@ -1,0 +1,45 @@
+---
+# tasks file for krustlet
+- name: Add the user 'krustlet' with a specific uid and a primary group of 'admin'
+  ansible.builtin.user:
+    name: krustlet
+    comment: krustlet
+    group: admin
+    system: true
+    home: {{ krustlet_installation }}
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: {{ krustlet_installation }}
+    state: directory
+    mode: '0755'
+    owner: krustlet
+- name: Download krustlet
+  ansible.builtin.get_url:
+    url: {{ krustlet_source }}
+    dest: "{{ krustlet_installation }}/krustlet.tar.gz"
+    mode: '0774'
+  become_user: krustlet
+- name: Extract krustlet.tar.gz into /var/lib/foo
+  ansible.builtin.unarchive:
+    src: "{{ krustlet_installation }}/krustlet.tar.gz"
+    dest:  {{ krustlet_installation }}
+  become_user: krustlet
+- name: create bootstap conf
+  ansible.builtin.shell: 
+    chdir: {{ krustlet_installation }}
+    cmd: bash <(curl https://raw.githubusercontent.com/krustlet/krustlet/main/scripts/bootstrap.sh)
+  become_user: krustlet
+
+- name: Krustlet | Create environment file
+  template: src=krustlet.env.j2 dest=/etc/sysconfig/krustlet
+- name: Krustlet | Create Unit file
+  template: src=krustlet.service.j2 dest=/lib/systemd/system/krustlet.service mode=644
+  notify:
+    - reload systemctl
+- name: Krustlet | Start Krustlet
+  service: name=krustlet.service state=started enabled=yes
+- name: accept new cert
+  ansible.builtin.shell: 
+    cmd: kubectl certificate approve {{ansible_hostname}}-tls  
+  notify:
+    - Krustlet | Restart Krustlet

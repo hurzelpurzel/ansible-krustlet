@@ -1,0 +1,6 @@
+---
+# handlers file for krustlet
+- name: Krustlet | Restart Krustlet
+  ansible.builtin.service:
+    name: krustlet
+    state: restarted
