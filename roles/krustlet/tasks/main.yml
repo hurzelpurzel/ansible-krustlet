@@ -23,11 +23,22 @@
     dest: "{{ krustlet_installation }}/krustlet.tar.gz"
     mode: '0774'
   #become_user: krustlet
-- name: Extract krustlet.tar.gz into /var/lib/foo
+- name: "Extract krustlet.tar.gz into {{ krustlet_installation }}"
   ansible.builtin.unarchive:
     src: "{{ krustlet_installation }}/krustlet.tar.gz"
     dest:  "{{ krustlet_installation }}"
-  #become_user: krustlet
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ krustlet_installation }}/.kube"
+    state: directory
+    mode: '0755'
+    owner: krustlet
+- name: Copy kubeconfig
+  ansible.builtin.copy:
+    src: "{{kubeconfig_path}}"
+    dest: {{ krustlet_installation }}/.kube/conf
+    owner: krustlet
+    mode: '0644'
 - name: Download bootstrap script
   ansible.builtin.get_url:
      url: https://raw.githubusercontent.com/krustlet/krustlet/main/scripts/bootstrap.sh
