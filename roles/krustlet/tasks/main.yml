@@ -1,5 +1,9 @@
 ---
 # tasks file for krustlet
+- name: Ensure group "admin" exists
+  ansible.builtin.group:
+        name: admin
+        state: present
 - name: Add the user 'krustlet' with a specific uid and a primary group of 'admin'
   ansible.builtin.user:
     name: krustlet
