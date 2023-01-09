@@ -36,7 +36,7 @@
 - name: Copy kubeconfig
   ansible.builtin.copy:
     src: "{{kubeconfig_path}}"
-    dest: {{ krustlet_installation }}/.kube/conf
+    dest: "{{ krustlet_installation }}/.kube/conf"
     owner: krustlet
     mode: '0644'
 - name: Download bootstrap script
