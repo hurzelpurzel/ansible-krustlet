@@ -37,8 +37,11 @@
   ansible.builtin.copy:
     src: "{{kubeconfig_path}}"
     dest: "{{ krustlet_installation }}/.kube/conf"
-    owner: krustlet
     mode: '0644'
+- name: Ensure Hippo Url is present in /etc/hosts
+  ansible.builtin.lineinfile:
+      path: /etc/environment
+      line: "KUBECONFIG_FILE={{ krustlet_installation }}/.kube/conf"
 - name: Download bootstrap script
   ansible.builtin.get_url:
      url: https://raw.githubusercontent.com/krustlet/krustlet/main/scripts/bootstrap.sh
