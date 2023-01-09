@@ -9,7 +9,7 @@
     home: "{{ krustlet_installation }}"
 - name: Create a directory if it does not exist
   ansible.builtin.file:
-    path: {{ krustlet_installation }}
+    path: "{{ krustlet_installation }}"
     state: directory
     mode: '0755'
     owner: krustlet
@@ -26,7 +26,7 @@
   become_user: krustlet
 - name: create bootstap conf
   ansible.builtin.shell: 
-    chdir: {{ krustlet_installation }}
+    chdir: "{{ krustlet_installation }}"
     cmd: bash <(curl https://raw.githubusercontent.com/krustlet/krustlet/main/scripts/bootstrap.sh)
   become_user: krustlet
 
