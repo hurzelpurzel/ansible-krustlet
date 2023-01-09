@@ -32,7 +32,7 @@
   ansible.builtin.get_url:
      url: https://raw.githubusercontent.com/krustlet/krustlet/main/scripts/bootstrap.sh
      dest: "{{ krustlet_installation }}/bootstrap.sh"
-     owner: https://raw.githubusercontent.com/krustlet/krustlet/main/scripts/bootstrap.sh
+     owner: krustlet
      mode: 0744
 #- name: create bootstap conf
 #  ansible.builtin.shell: 
