@@ -1,6 +1,7 @@
 ---
-- hosts: krustlet
+- hosts: localhost
   roles:
+    - role: kubectl
     - role: krustlet
          
         

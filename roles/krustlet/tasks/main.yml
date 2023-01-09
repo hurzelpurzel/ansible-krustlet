@@ -6,7 +6,7 @@
     comment: krustlet
     group: admin
     system: true
-    home: {{ krustlet_installation }}
+    home: "{{ krustlet_installation }}"
 - name: Create a directory if it does not exist
   ansible.builtin.file:
     path: {{ krustlet_installation }}
@@ -15,14 +15,14 @@
     owner: krustlet
 - name: Download krustlet
   ansible.builtin.get_url:
-    url: {{ krustlet_source }}
+    url: "{{ krustlet_source }}"
     dest: "{{ krustlet_installation }}/krustlet.tar.gz"
     mode: '0774'
   become_user: krustlet
 - name: Extract krustlet.tar.gz into /var/lib/foo
   ansible.builtin.unarchive:
     src: "{{ krustlet_installation }}/krustlet.tar.gz"
-    dest:  {{ krustlet_installation }}
+    dest:  "{{ krustlet_installation }}"
   become_user: krustlet
 - name: create bootstap conf
   ansible.builtin.shell: 

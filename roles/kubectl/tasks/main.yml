@@ -1,0 +1,28 @@
+---
+# tasks file for kubectl
+# Install nomad
+- name: Update repositories cache and install "nomad" package
+  ansible.builtin.apt:
+    pkg:
+      - ca-certificates 
+      - curl
+    update_cache: yes
+- name: Add Kubnernetes repo
+  block:
+    - name: Google |add apt key
+      ansible.builtin.apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+    - name: Google | keyring
+      ansible.builtin.get_url:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        dest: /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+    - name: Hashicorp | apt source
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+        state: present
+# Install kubectl
+- name: Update repositories cache and install "nomad" package
+  ansible.builtin.apt:
+    name: kubectl
+    update_cache: yes
